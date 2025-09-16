@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width" initial-scale="1.0" />
+  <title>Umar Task Timer</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+ <header>
+   ⏰ Task Timer
+ </header>
+  <main>
+    <input type="text" id="taskName" placeholder="Task name">
+  <input type="datetime-local" id="taskTime"><br>
+  <select id="repeatOption">
+    <option value="none">No repeat</option>
+    <option value="daily">Repeat daily</option>
+    <option value="weekly">Repeat weekly</option>
+    <option value="yearly">Repeat yearly</option>
+  </select>
+  <button  onclick="addTask()">Add Task</button>
+  <button class="del" onclick="stopAlarm()">Stop Alarm</button>
+  <div id="taskList"></div>
+
+  <!-- Loud alarm sound -->
+  <audio id="alarmSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto" loop></audio>
+
+  </main>
+  
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Subscribe to Newsletter</h4>
+        <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+          <input type="email" id="newsletterEmail" placeholder="Enter your email" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="#" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/+256744759181" class="social-icon whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+          <a href="#" class="social-icon linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <br>
+        <p>&copy; 2025 UmarTechnologies. All rights reserved.</p>
+        <p>Last updated: September 16, 2025</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="script.js"></script>
+</body>
+</html>

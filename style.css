@@ -1,0 +1,209 @@
+  *{
+    box-sizing:border-box;
+    font-family:sans-serif;
+    margin: 0;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1;
+  }
+  header {
+    background-color: blue;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    margin-bottom: 10px;
+  }
+body { font-family: sans-serif; background: #f0f0f0;text-align: center;}
+    h1 { color: #333;}
+    input{
+      width: 80%;
+      max-width: 300px;
+    }
+    input, button { margin: 5px; padding: 8px;}
+
+#taskList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task {
+  background: #e0ffe0;
+  padding: 10px;
+  border-left: 5px solid #007BFF;
+  transition: background 0.3s;
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+@media (min-width: 500px) {
+  #taskList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between;
+  }
+  
+  .task {
+    flex: 1;
+    min-width: 300px;
+    max-width: calc(50% - 7.5px);
+  }
+}
+
+@media (min-width: 900px) {
+  .task {
+    max-width: calc(33.333% - 10px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .task {
+    max-width: calc(25% - 11.25px);
+  }
+}
+.task.soon { background: #ffe0e0; border-left-color: red;}
+.task.expired { background: #cccccc; border-left-color: gray;}
+.flag { position: absolute; top: 10px; right: 10px; font-size: 20px; color: green;}
+.controls button { margin-right: 5px;border:0;}
+  .del{
+    background-color:red;
+    color:white;
+    border:0;
+  }
+  button{
+    cursor:pointer;
+    border:0;
+    border-radius:10px;
+  }
+  
+  footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    margin-top: auto;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .footer-content {
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 20px;
+  }
+  .footer-section h4 {
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 16px;
+  }
+
+
+  .newsletter-form input[type="email"] {
+    flex: 1;
+    padding:8px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    margin:0;
+  }
+
+  .newsletter-form button {
+    background-color: #007bff;
+    color: white;
+    padding: 8px;
+    width: max-content;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+
+  .newsletter-form button:hover {
+    background-color: #0056b3;
+  }
+
+  .footer-section p {
+    margin: 5px 0;
+    line-height: 1.4;
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 50%;
+    transition: transform 0.3s, background-color 0.3s, color 0.3s;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 45px;
+    height: 45px;
+    color: #fff;
+  }
+
+  .social-icon i {
+    font-size: 20px;
+  }
+
+  .social-icon:hover {
+    transform: scale(1.1);
+    color: #fff;
+  }
+
+  .social-icon.instagram:hover {
+    background-color: #E4405F;
+  }
+
+  .social-icon.whatsapp:hover {
+    background-color: #25D366;
+  }
+
+  .social-icon.youtube:hover {
+    background-color: #FF0000;
+  }
+
+  .social-icon.tiktok:hover {
+    background-color: #000000;
+  }
+
+  .social-icon.linkedin:hover {
+    background-color: #0077B5;
+  }
+
+  @media (max-width: 768px) {
+    .footer-content {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .newsletter-form {
+      flex-direction: column;
+    }
+
+    .social-icons {
+      justify-content: center;
+    }
+  }
