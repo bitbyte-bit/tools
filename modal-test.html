@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Functionality Test</title>
+    <style>
+        /* Import the same styles */
+        :root {
+            --primary-color: #007bff;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --border-color: #dee2e6;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            color: var(--dark-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--light-color);
+        }
+
+        .test-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .test-results {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            min-height: 50px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        .modal.modal-open {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.modal-open .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 20px 30px 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark-color);
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background-color: var(--light-color);
+        }
+
+        .modal-body {
+            padding: 20px 30px;
+            overflow-y: auto;
+        }
+
+        .modal-form {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .modal-footer {
+            padding: 15px 30px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        /* Test scroll behavior */
+        .scroll-test {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            margin: 10px 0;
+            background: white;
+        }
+
+        .scroll-test p {
+            margin-bottom: 10px;
+        }
+
+        /* Log styles */
+        .log-entry {
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .log-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .log-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .log-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        body.modal-open {
+            overflow: hidden !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 10px;
+            }
+            
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .test-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                text-align: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Modal Functionality Test Suite</h1>
+        
+        <div class="test-section">
+            <h2>Basic Modal Tests</h2>
+            <div class="test-buttons">
+                <button class="btn btn-primary" onclick="testModalOpen('stockModal', 'Stock Modal')">
+                    📦 Test Stock Modal
+                </button>
+                <button class="btn btn-success" onclick="testModalOpen('saleModal', 'Sale Modal')">
+                    💰 Test Sale Modal
+                </button>
+                <button class="btn btn-danger" onclick="testCloseAllModals()">
+                    ❌ Close All Modals
+                </button>
+            </div>
+            <div class="test-results" id="basicTestResults">
+                <p>Click the buttons above to test modal functionality.</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Scroll Lock Tests</h2>
+            <div class="test-buttons">
+                <button class="btn btn-primary" onclick="testScrollLock()">
+                    🔒 Test Scroll Lock
+                </button>
+                <button class="btn btn-success" onclick="testScrollUnlock()">
+                    🔓 Test Scroll Unlock
+                </button>
+            </div>
+            <div class="scroll-test" id="scrollTestArea">
+                <p><strong>Scroll Test Area:</strong></p>
+                <p>This area can be scrolled when no modal is open. Try scrolling this content and then open a modal to test if scrolling is properly disabled.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div class="test-results" id="scrollTestResults">
+                <p>Scroll test area - try scrolling this content with and without modals open.</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>CSS Class Tests</h2>
+            <div class="test-buttons">
+                <button class="btn btn-primary" onclick="testCSSClasses()">
+                    🎨 Test CSS Classes
+                </button>
+                <button class="btn btn-success" onclick="testModalAnimations()">
+                    ✨ Test Animations
+                </button>
+            </div>
+            <div class="test-results" id="cssTestResults">
+                <p>Test CSS class application and removal.</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test Log</h2>
+            <div class="test-results" id="testLog">
+                <p>Test results will appear here...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stock Modal -->
+    <div id="stockModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="stockModalTitle">Stock Modal</h2>
+                <button class="modal-close" onclick="hideStockModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-form">
+                    <div class="form-group">
+                        <label class="form-label" for="stockName">Item Name:</label>
+                        <input type="text" id="stockName" class="form-input" placeholder="Enter item name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="stockQuantity">Quantity:</label>
+                        <input type="number" id="stockQuantity" class="form-input" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="stockPrice">Price:</label>
+                        <input type="number" id="stockPrice" class="form-input" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="stockDescription">Description:</label>
+                        <textarea id="stockDescription" class="form-input" rows="3" placeholder="Enter description"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="hideStockModal()">Save</button>
+                <button class="btn btn-danger" onclick="hideStockModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sale Modal -->
+    <div id="saleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="saleModalTitle">Sale Modal</h2>
+                <button class="modal-close" onclick="hideSaleModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-form">
+                    <div class="form-group">
+                        <label class="form-label" for="saleItem">Item:</label>
+                        <select id="saleItem" class="form-input">
+                            <option value="">Select item</option>
+                            <option value="1">Product A</option>
+                            <option value="2">Product B</option>
+                            <option value="3">Product C</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="saleQuantity">Quantity Sold:</label>
+                        <input type="number" id="saleQuantity" class="form-input" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="saleTotal">Total Amount:</label>
+                        <input type="number" id="saleTotal" class="form-input" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="saleDate">Sale Date:</label>
+                        <input type="date" id="saleDate" class="form-input">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="hideSaleModal()">Save</button>
+                <button class="btn btn-danger" onclick="hideSaleModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test functions
+        function log(message, type = 'info') {
+            const logContainer = document.getElementById('testLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const logClass = `log-${type}`;
+            logContainer.innerHTML += `<div class="log-entry ${logClass}">[${timestamp}] ${message}</div>`;
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function testModalOpen(modalId, modalName) {
+            const modal = document.getElementById(modalId);
+            const body = document.body;
+            
+            try {
+                // Test CSS class approach
+                modal.classList.add('modal-open');
+                body.classList.add('modal-open');
+                
+                log(`✅ ${modalName} opened successfully using CSS classes`, 'success');
+                
+                // Verify modal is visible
+                setTimeout(() => {
+                    if (modal.classList.contains('modal-open')) {
+                        log(`✅ ${modalName} CSS class verification passed`, 'success');
+                    } else {
+                        log(`❌ ${modalName} CSS class verification failed`, 'error');
+                    }
+                }, 100);
+                
+                // Test scroll lock
+                const scrollY = window.scrollY;
+                document.body.style.top = `-${scrollY}px`;
+                
+                log(`🔒 Scroll lock applied (scroll position: ${scrollY}px)`, 'info');
+                
+            } catch (error) {
+                log(`❌ Error opening ${modalName}: ${error.message}`, 'error');
+            }
+        }
+
+        function hideStockModal() {
+            const modal = document.getElementById('stockModal');
+            hideModal(modal, 'Stock Modal');
+        }
+
+        function hideSaleModal() {
+            const modal = document.getElementById('saleModal');
+            hideModal(modal, 'Sale Modal');
+        }
+
+        function hideModal(modal, modalName) {
+            try {
+                // Remove CSS classes
+                modal.classList.remove('modal-open');
+                document.body.classList.remove('modal-open');
+                
+                // Restore scroll position
+                const scrollY = document.body.style.top;
+                document.body.style.top = '';
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                
+                log(`✅ ${modalName} closed successfully`, 'success');
+                
+            } catch (error) {
+                log(`❌ Error closing ${modalName}: ${error.message}`, 'error');
+            }
+        }
+
+        function testCloseAllModals() {
+            const modals = ['stockModal', 'saleModal'];
+            let closedCount = 0;
+            
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (modal.classList.contains('modal-open')) {
+                    hideModal(modal, modalId.replace('Modal', '').replace(/([A-Z])/g, ' $1').trim());
+                    closedCount++;
+                }
+            });
+            
+            log(`🔄 Closed ${closedCount} open modal(s)`, 'info');
+        }
+
+        function testScrollLock() {
+            log('🔒 Testing scroll lock...', 'info');
+            
+            // Check if scroll is locked
+            const isLocked = document.body.classList.contains('modal-open');
+            const bodyStyle = getComputedStyle(document.body);
+            const overflow = bodyStyle.overflow;
+            
+            if (isLocked && overflow === 'hidden') {
+                log('✅ Scroll lock verification passed', 'success');
+            } else {
+                log(`❌ Scroll lock verification failed (locked: ${isLocked}, overflow: ${overflow})`, 'error');
+            }
+        }
+
+        function testScrollUnlock() {
+            log('🔓 Testing scroll unlock...', 'info');
+            
+            // Remove modal classes
+            document.body.classList.remove('modal-open');
+            document.body.style.top = '';
+            
+            // Check if scroll is unlocked
+            const isLocked = document.body.classList.contains('modal-open');
+            const bodyStyle = getComputedStyle(document.body);
+            const overflow = bodyStyle.overflow;
+            
+            if (!isLocked && overflow !== 'hidden') {
+                log('✅ Scroll unlock verification passed', 'success');
+            } else {
+                log(`❌ Scroll unlock verification failed (locked: ${isLocked}, overflow: ${overflow})`, 'error');
+            }
+        }
+
+        function testCSSClasses() {
+            log('🎨 Testing CSS class application...', 'info');
+            
+            const stockModal = document.getElementById('stockModal');
+            const saleModal = document.getElementById('saleModal');
+            
+            // Test adding classes
+            stockModal.classList.add('modal-open');
+            document.body.classList.add('modal-open');
+            
+            setTimeout(() => {
+                const stockClasses = Array.from(stockModal.classList);
+                const bodyClasses = Array.from(document.body.classList);
+                
+                log(`📋 Stock modal classes: ${stockClasses.join(', ')}`, 'info');
+                log(`📋 Body classes: ${bodyClasses.join(', ')}`, 'info');
+                
+                if (stockModal.classList.contains('modal-open') && document.body.classList.contains('modal-open')) {
+                    log('✅ CSS class application test passed', 'success');
+                } else {
+                    log('❌ CSS class application test failed', 'error');
+                }
+                
+                // Clean up
+                stockModal.classList.remove('modal-open');
+                document.body.classList.remove('modal-open');
+            }, 100);
+        }
+
+        function testModalAnimations() {
+            log('✨ Testing modal animations...', 'info');
+            
+            const modal = document.getElementById('stockModal');
+            const content = modal.querySelector('.modal-content');
+            
+            // Open modal
+            modal.classList.add('modal-open');
+            
+            // Check animation styles
+            setTimeout(() => {
+                const computedStyle = getComputedStyle(content);
+                const transform = computedStyle.transform;
+                const transition = computedStyle.transition;
+                
+                log(`🎬 Modal transform: ${transform}`, 'info');
+                log(`🎬 Transition: ${transition}`, 'info');
+                
+                if (transform && transition) {
+                    log('✅ Modal animations working correctly', 'success');
+                } else {
+                    log('❌ Modal animations may not be working', 'error');
+                }
+                
+                // Close modal
+                modal.classList.remove('modal-open');
+            }, 300);
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                hideModal(event.target, 'Outside Click');
+            }
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                testCloseAllModals();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 Modal test suite initialized', 'success');
+            log('💡 Use ESC key to close all modals quickly', 'info');
+        });
+    </script>
+</body>
+</html>
